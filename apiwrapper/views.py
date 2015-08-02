@@ -6,6 +6,12 @@ course = CourseAPI()
 laundry = LaundryAPI()
 labs = LabAPI()
 
+@apiwrapper.route('/')
+def index():
+    di = {'status': 'Up! Good work team'}
+    print di['status']
+    return jsonify(di)
+
 @apiwrapper.route('/courses/<term>/<subject>', strict_slashes=False)
 def get_courses(term='-1', subject='-1'):
     if term == '-1' or subject == '-1':
