@@ -1,5 +1,8 @@
 ### Web Wrapper for PittAPI
 
+# Requirements
+1. Python 2.7.9+ (you'll have to edit things a bit for Python 3.5+)
+
 # Installation
 1. Clone this repo with the `--recursive` flag.
 1. Create a virtual environment and enable it.
