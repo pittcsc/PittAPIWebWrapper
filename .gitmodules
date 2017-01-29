@@ -1,6 +1,3 @@
-[submodule "PittAPI"]
-	path = PittAPI
-	url = git@github.com:Pitt-CSC/PittAPIWebWrapper.git
 [submodule "apiwrapper/PittAPI"]
 	path = apiwrapper/PittAPI
-	url = git@github.com:Pitt-CSC/PittAPIWebWrapper.git
+	url = git@github.com:Pitt-CSC/PittAPI.git
