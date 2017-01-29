@@ -1,7 +1,11 @@
 from flask import Flask, jsonify, Response
+from flask_cors import CORS, cross_origin
+
 from PittAPI.pittAPI import *
 
 apiwrapper = Flask(__name__)
+CORS(apiwrapper)
+
 course = CourseAPI()
 laundry = LaundryAPI()
 labs = LabAPI()
