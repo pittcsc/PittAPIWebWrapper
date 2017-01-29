@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, Response
-from pittAPI import *
+from PittAPI.pittAPI import *
 
 apiwrapper = Flask(__name__)
 course = CourseAPI()
@@ -53,3 +53,6 @@ def get_laundry_status_detailed(loc='-1'):
         raise InvalidParameterException()
 
     return Response(str(laundry.get_status_detailed(loc)), mimetype='application/json')
+
+if __name__ == '__main__':
+  apiwrapper.run(debug=True, port=8000)
