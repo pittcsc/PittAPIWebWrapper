@@ -1,4 +1,3 @@
-from apiwrapper.views import apiwrapper
+from apiwrapper.views import api_wrapper
 
-if __name__ == '__main__':
-    apiwrapper.run(debug=True)
+api_wrapper.run(debug=True)

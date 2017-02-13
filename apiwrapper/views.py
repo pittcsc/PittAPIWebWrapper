@@ -1,58 +1,61 @@
 from flask import Flask, jsonify, Response
 from flask_cors import CORS, cross_origin
 
-from PittAPI import *
+from .PittAPI.PittAPI import course, lab, laundry
 
-apiwrapper = Flask(__name__)
-CORS(apiwrapper)
+api_wrapper = Flask(__name__)
+CORS(api_wrapper)
 
-@apiwrapper.route('/')
+
+@api_wrapper.route('/')
 def index():
     di = {'status': 'Up! Good work team'}
     print(di['status'])
     return jsonify(di)
 
-@apiwrapper.route('/courses/<term>/<subject>', strict_slashes=False)
-def get_courses(term='-1', subject='-1'):
-    if term == '-1' or subject == '-1':
-        raise InvalidParameterException()
 
-    return jsonify(course.get_courses(term, subject))
+@api_wrapper.route('/courses/<term>/<code>', strict_slashes=False)
+def get_courses(term=None, code=None):
+    if term is None and code is None:
+        raise ValueError()
 
-@apiwrapper.route('/courses_by_req/<term>/<req>', strict_slashes=False)
-def get_courses_by_req(term='-1', req='-1'):
-    if term == '-1' or req == '-1':
-        raise InvalidParameterException()
+    try:
+        return jsonify(course.get_courses(term, code))
+    except ValueError:
+        return jsonify({'error': 'Subject or term entered is invalid.'})
 
-    return jsonify(course.get_courses_by_req(term, req))
 
-@apiwrapper.route('/class_description/<class_number>/<term>', strict_slashes=False)
+@api_wrapper.route('/class_description/<class_number>/<term>', strict_slashes=False)
 def get_class_description(class_number='-1', term='-1'):
     if term == '-1' or class_number == '-1':
-            raise InvalidParameterException()
+            raise ValueError()
 
     return jsonify(course.get_class_description(class_number, term))
 
-@apiwrapper.route('/lab_status/<lab_name>', strict_slashes=False)
+
+@api_wrapper.route('/lab_status/<lab_name>', strict_slashes=False)
 def get_lab_status(lab_name='-1'):
     if lab_name == '-1':
-        raise InvalidParameterException()
+        raise ValueError()
 
-    return jsonify(labs.get_status(lab_name))
+    return jsonify(lab.get_status(lab_name))
 
-@apiwrapper.route('/laundry_simple/<loc>', strict_slashes=False)
+
+@api_wrapper.route('/laundry_simple/<loc>', strict_slashes=False)
 def get_laundry_status_simple(loc='-1'):
     if loc == '-1':
-        raise InvalidParameterException()
+        raise ValueError()
 
     return jsonify(laundry.get_status_simple(loc))
 
-@apiwrapper.route('/laundry_detailed/<loc>', strict_slashes=False)
+
+@api_wrapper.route('/laundry_detailed/<loc>', strict_slashes=False)
 def get_laundry_status_detailed(loc='-1'):
     if loc == '-1':
-        raise InvalidParameterException()
+        raise ValueError()
 
     return jsonify(laundry.get_status_detailed(loc))
 
+
 if __name__ == '__main__':
-  apiwrapper.run(debug=True, port=8000)
+   api_wrapper.run(debug=True, port=8000)

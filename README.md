@@ -4,7 +4,7 @@
 ![Python 3.4, 3.5](https://img.shields.io/badge/python-3.4%2C%203.5-green.svg)
 
 # Installation
-1. Clone this repo with the `--recursive` flag.
+1. Clone this repo with the `--recurse-submodules` flag.
 1. Create a virtual environment and enable it.
 1. Run `git submodule update --remote --merge` to update the PittAPI submodule.
 1. Run `pip install -r requirements.txt` to install dependencies.
