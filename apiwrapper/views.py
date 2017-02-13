@@ -1,6 +1,22 @@
-from flask import Flask, jsonify, Response
-from flask_cors import CORS, cross_origin
+'''
+Web Wrapper for PittAPI, web app for REST endpoints for the PittAPI
+Copyright (C) 2015 Ritwik Gupta
 
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+'''
+from flask import Flask, jsonify, Response, make_response
+from flask_cors import CORS, cross_origin
 from .PittAPI.PittAPI import course, lab, laundry
 
 api_wrapper = Flask(__name__)
@@ -9,7 +25,7 @@ CORS(api_wrapper)
 
 @api_wrapper.errorhandler(404)
 def page_not_found(e):
-    return jsonify({'error': 'invalid request'})
+    return make_response(jsonify({'error': 'invalid request'}), 404)
 
 
 @api_wrapper.route('/')
@@ -19,7 +35,8 @@ def index():
     return jsonify(di)
 
 
-@api_wrapper.route('/courses/<term>/<code>', strict_slashes=False)
+@api_wrapper.route('/courses/<term>/<code>', methods=['GET'], strict_slashes=False)
+@cross_origin(allow_headers=['Content-Type'])
 def get_courses(term=None, code=None):
     if term is None and code is None:
         raise ValueError()
