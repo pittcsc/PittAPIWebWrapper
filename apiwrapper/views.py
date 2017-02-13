@@ -1,19 +1,15 @@
 from flask import Flask, jsonify, Response
 from flask_cors import CORS, cross_origin
 
-from PittAPI.pittAPI import *
+from PittAPI import *
 
 apiwrapper = Flask(__name__)
 CORS(apiwrapper)
 
-course = CourseAPI()
-laundry = LaundryAPI()
-labs = LabAPI()
-
 @apiwrapper.route('/')
 def index():
     di = {'status': 'Up! Good work team'}
-    print di['status']
+    print(di['status'])
     return jsonify(di)
 
 @apiwrapper.route('/courses/<term>/<subject>', strict_slashes=False)
