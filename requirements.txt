@@ -1,5 +1,5 @@
 Flask
-flask-cors
+flask-restful
 beautifulsoup4
 nose
 nose-cov

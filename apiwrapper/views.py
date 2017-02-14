@@ -15,69 +15,64 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 '''
-from flask import Flask, jsonify, Response, make_response
-from flask_cors import CORS, cross_origin
+from flask import Flask, jsonify, make_response
+from flask_restful import Api, Resource
 from .PittAPI.PittAPI import course, lab, laundry
 
-api_wrapper = Flask(__name__)
-CORS(api_wrapper)
+
+app = Flask(__name__)
+api = Api(app)
 
 
-@api_wrapper.errorhandler(404)
+@app.errorhandler(404)
 def page_not_found(e):
-    return make_response(jsonify({'error': 'invalid request'}), 404)
+    return make_response(jsonify({'error': 'Invalid request'}), 404)
 
 
-@api_wrapper.route('/')
-def index():
-    di = {'status': 'Up! Good work team'}
-    print(di['status'])
-    return jsonify(di)
+class CourseGetAPI(Resource):
+    def get(self, term, code):
+        try:
+            return jsonify(course.get_courses(term, code))
+        except ValueError:
+            return jsonify({'error': 'Invalid subject or term'})
 
 
-@api_wrapper.route('/courses/<term>/<code>', methods=['GET'], strict_slashes=False)
-@cross_origin(allow_headers=['Content-Type'])
-def get_courses(term=None, code=None):
-    if term is None and code is None:
-        raise ValueError()
-
-    try:
-        return jsonify(course.get_courses(term, code))
-    except ValueError:
-        return jsonify({'error': 'Subject or term entered is invalid.'})
+class ClassDescriptionAPI(Resource):
+    def get(self, term, class_number):
+        try:
+            return jsonify(course.get_class_description(term, class_number))
+        except ValueError:
+            return jsonify({'error': 'Invalid class_number or term'})
 
 
-@api_wrapper.route('/class_description/<class_number>/<term>', strict_slashes=False)
-def get_class_description(class_number=None, term=None):
-    if term is None or class_number is None:
-            raise ValueError()
-
-    return jsonify(course.get_class_description(class_number, term))
-
-
-@api_wrapper.route('/lab_status/<lab_name>', strict_slashes=False)
-def get_lab_status(lab_name=None):
-    if lab_name is None:
-        raise ValueError()
-
-    return jsonify(lab.get_status(lab_name))
+class LabStatusAPI(Resource):
+    def get(self, lab_name):
+        try:
+            return jsonify(lab.get_status(lab_name))
+        except ValueError:
+            return jsonify({'error': 'Invalid class_number or term'})
 
 
-@api_wrapper.route('/laundry_simple/<loc>', strict_slashes=False)
-def get_laundry_status_simple(loc=None):
-    if loc is None:
-        raise ValueError()
+class LaundryStatusAPI(Resource):
+    def get(self, location):
+        try:
+            return jsonify(laundry.get_status_simple(location))
+        except ValueError:
+            return jsonify({'error': 'Invalid class_number or term'})
 
-    return jsonify(laundry.get_status_simple(loc))
 
+class LaundryStatusDetailedAPI(Resource):
+    def get(self, location):
+        try:
+            return jsonify(laundry.get_status_detailed(location))
+        except ValueError:
+            return jsonify({'error': 'Invalid class_number or term'})
 
-@api_wrapper.route('/laundry_detailed/<loc>', strict_slashes=False)
-def get_laundry_status_detailed(loc=None):
-    if loc is None:
-        raise ValueError()
-
-    return jsonify(laundry.get_status_detailed(loc))
-
+api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
+api.add_resource(ClassDescriptionAPI, '/class_description/<class_number>/<term>')
+api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
+api.add_resource(LaundryStatusAPI, '/laundry_simple/<location>')
+api.add_resource(LaundryStatusDetailedAPI, '/laundry_detailed/<location>')
 
 if __name__ is '__main__':
-   api_wrapper.run(debug=True, port=8000)
+   app.run(debug=True, port=8000)
