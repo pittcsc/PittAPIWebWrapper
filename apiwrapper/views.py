@@ -16,12 +16,17 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 '''
 from flask import Flask, jsonify, make_response
+
+from flask_cors import CORS, cross_origin
+
 from flask_restful import Api, Resource
 from .PittAPI.PittAPI import course, lab, laundry
 
 
 app = Flask(__name__)
 api = Api(app)
+
+CORS(app)
 
 
 @app.errorhandler(404)
