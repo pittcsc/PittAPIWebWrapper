@@ -24,7 +24,7 @@ app = Flask(__name__)
 api = Api(app)
 
 @api.representation('application/json')
-def output_json(data, code, headers=None):
+def output_json(data, code=200, headers=None):
     """Makes a Flask response with a JSON encoded body"""
     resp = make_response(json.dumps(data), code)
     resp.headers.extend(headers or {})
