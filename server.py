@@ -17,4 +17,4 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 '''
 from apiwrapper.views import app
 
-app.run(debug=True)
+app.run(host="127.0.0.1", port=5000)
