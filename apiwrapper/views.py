@@ -23,8 +23,9 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
+
 @api.representation('application/json')
-def output_json(data, code=200, headers=None):
+def output_json(data, code, headers=None):
     """Makes a Flask response with a JSON encoded body"""
     resp = make_response(json.dumps(data), code)
     resp.headers.extend(headers or {})
@@ -44,10 +45,10 @@ class CourseGetAPI(Resource):
             return {'error': str(e)}
 
 
-class ClassDescriptionAPI(Resource):
+class ClassAPI(Resource):
     def get(self, term, class_number):
         try:
-            return course.get_class_description(term, class_number)
+            return course.get_class(term, class_number)
         except Exception as e:
             return {'error': str(e)}
 
@@ -76,10 +77,9 @@ class LaundryStatusDetailedAPI(Resource):
             return output_json({'error': str(e)})
 
 api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
-api.add_resource(ClassDescriptionAPI, '/class_description/<class_number>/<term>')
+api.add_resource(ClassAPI, '/class/<class_number>/<term>')
 api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
 api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
 api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
 
-if __name__ is '__main__':
-    app.run(debug=True, port=8000)
+app.run(debug=True, port=8000)
