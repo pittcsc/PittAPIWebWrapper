@@ -23,7 +23,6 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
-
 @api.representation('application/json')
 def output_json(data, code, headers=None):
     """Makes a Flask response with a JSON encoded body"""
