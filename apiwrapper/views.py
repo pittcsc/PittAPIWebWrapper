@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 '''
 from flask import Flask, make_response
 from flask_restful import Api, Resource
-from PittAPI.PittAPI import course, lab, laundry
+from PittAPI.PittAPI import course, lab, laundry, people
 import json
 
 app = Flask(__name__)
@@ -66,7 +66,7 @@ class LaundryStatusAPI(Resource):
         try:
             return laundry.get_status_simple(location)
         except Exception as e:
-            return output_json({'error': str(e)})
+            return {'error': str(e)}
 
 
 class LaundryStatusDetailedAPI(Resource):
@@ -74,12 +74,22 @@ class LaundryStatusDetailedAPI(Resource):
         try:
             return laundry.get_status_detailed(location)
         except Exception as e:
-            return output_json({'error': str(e)})
+            return {'error': str(e)}
+
+
+class PeopleAPI(Resource):
+    def get(self, query):
+        try:
+            return people.get_person(query)
+        except Exception as e:
+            return {'error': str(e)}
 
 api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
 api.add_resource(ClassAPI, '/class/<class_number>/<term>')
 api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
 api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
 api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
+api.add_resource(PeopleAPI, '/people/<query>')
 
-app.run(debug=True, port=8000)
+if __name__ is '__main__':
+    app.run(debug=True, port=8000)
