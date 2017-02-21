@@ -1,5 +1,6 @@
 Flask
 flask-restful
+flask_cors
 beautifulsoup4
 nose
 nose-cov
