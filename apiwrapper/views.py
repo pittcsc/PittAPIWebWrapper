@@ -85,18 +85,47 @@ class PeopleAPI(Resource):
             return {'error': str(e)}
 
 class TextbookAPI(Resource):
+    def get(self, department_code, course_name, instructor):
+        try:
+            return textbook.get_books_data({'department_code': department_code, 'course_name': course_name, 'instructor': instructor})
+        except Exception as e:
+            return {'error': str(e)}
+
+class ShuttleRoutesAPI(Resource):
+    def get(self):
+        try:
+            return shuttle.get_routes()
+        except Exception as e:
+            return {'error': str(e)}
+
+class ShuttleVehiclePointsAPI(Resource):
+    def get(self):
+        try:
+            return shuttle.get_map_vehicle_points()
+        except Exception as e:
+            return {'error': str(e)}
+
+class ShuttleStopArrivalsAPI(Resource):
+    def get(self, times_per_stop=1):
+        try:
+            return shuttle.get_route_stop_arrivals(times_per_stop)
+        except Exception as e:
+            return {'error': str(e)}
+
+class ShuttleStopEstimatesAPI(Resource):
+    def get(self, vehicle_id, quantity=2):
+        try:
+            return shuttle.get_vehicle_route_stop_estimates(vehicle_id, quantity)
+        except Exception as e:
+            return {'error': str(e)}
+get_vehicle_route_stop_estimates(vehicle_id, quantity=2):
+
+class NewsAPI(Resource):
     def get(self, ):
         try:
             return
         except Exception as e:
             return
-
-class ShuttleAPI(Resource):
-
-
-
-class NewsAPI(Resource):
-
 
 
 
@@ -108,6 +137,12 @@ api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
 api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
 api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
 api.add_resource(PeopleAPI, '/people/<query>')
+api.add_resource(ShuttleRoutesAPI, '/shuttle/routes')
+api.add_resource(ShuttleVehiclePointsAPI, '/shuttle/points')
+api.add_resource(ShuttleStopArrivalsAPI, '/shuttle/arrivals/<times_per_stop>')
+api.add_resource(ShuttleStopEstimatesAPI, '/shuttle/estimates/<vehicle_id>/<quantity>')
+
+api.add_resource(TextbookAPI, '/textbook/<department>/<course_name>/<instructor>')
 
 if __name__ is '__main__':
     app.run(debug=True, port=8000)
