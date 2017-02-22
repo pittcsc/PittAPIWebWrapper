@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 '''
 from flask import Flask, make_response
 from flask_restful import Api, Resource
-from PittAPI.PittAPI import course, lab, laundry, people
+from .PittAPI.PittAPI import course, lab, laundry, people
 import json
 
 app = Flask(__name__)
