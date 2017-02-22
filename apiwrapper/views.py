@@ -84,6 +84,24 @@ class PeopleAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+class TextbookAPI(Resource):
+    def get(self, ):
+        try:
+            return
+        except Exception as e:
+            return
+
+class ShuttleAPI(Resource):
+
+
+
+class NewsAPI(Resource):
+
+
+
+
+
+
 api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
 api.add_resource(ClassAPI, '/class/<class_number>/<term>')
 api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
