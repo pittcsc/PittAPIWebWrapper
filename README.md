@@ -5,10 +5,9 @@
 
 # Installation
 1. Clone this repo with the `--recurse-submodules` flag.
-1. Create a virtual environment `virtualenv venv` and enable it. `source venv/bin/activate`
+1. Create a virtual environment and enable it.
 1. Run `git submodule update --remote --merge` to update the PittAPI submodule.
 1. Run `pip install -r requirements.txt` to install dependencies.
-1. Run `cd apiwrapper/PittAPI` and run `pip install -r requirements.txt` to install PittAPI dependencies
 1. Launch `python server.py` to run the server.
 
 
