@@ -127,12 +127,12 @@ class ShuttleStopEstimatesAPI(Resource):
             return {'error': str(e)}
 
 class NewsAPI(Resource):
-    def get(self, feed='main_news', max_news_items=10):
+    def get(self, feed, max_news_items):
         try:
+            max_news_items = int(max_news_items)
             return news.get_news(feed, max_news_items)
         except Exception as e:
             return {'error': str(e)}
-
 
 
 
@@ -149,6 +149,7 @@ api.add_resource(ShuttleStopArrivalsAPI, '/shuttle/arrivals/<times_per_stop>')
 api.add_resource(ShuttleStopEstimatesAPI, '/shuttle/estimates/<vehicle_id>/<quantity>')
 api.add_resource(TextbookAPI, '/textbook/<department_code>/<course_name>/<instructor>/<term>')
 api.add_resource(TextbookNoTermAPI, '/textbook/<department_code>/<course_name>/<instructor>/')
+api.add_resource(NewsAPI, '/news/<feed>/<max_news_items>')
 
 if __name__ is '__main__':
     app.run(debug=True, port=8000)
