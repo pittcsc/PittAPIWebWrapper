@@ -127,11 +127,11 @@ class ShuttleStopEstimatesAPI(Resource):
             return {'error': str(e)}
 
 class NewsAPI(Resource):
-    def get(self, ):
+    def get(self, feed='main_news', max_news_items=10):
         try:
-            return
+            return news.get_news(feed, max_news_items)
         except Exception as e:
-            return
+            return {'error': str(e)}
 
 
 
