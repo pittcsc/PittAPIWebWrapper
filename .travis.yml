@@ -16,6 +16,7 @@ install:
   - "python3 -m \"virtualenv\" venv"
   - ". venv/bin/activate"
   - "pip3 install -r requirements.txt"
+  - "pip3 install -r apiwrapper/PittAPI/requirements.txt"
 # command to run tests
 script:
   - python3 -m "nose" --with-cov --cov apiwrapper/ --with-timer tests/*
