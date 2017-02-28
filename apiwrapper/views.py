@@ -17,12 +17,13 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 '''
 from flask import Flask, make_response
 from flask_restful import Api, Resource
+from flask_cors import CORS, cross_origin
 from .PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
 import json
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
-
 
 @api.representation('application/json')
 def output_json(data, code, headers=None):
@@ -133,8 +134,6 @@ class NewsAPI(Resource):
             return news.get_news(feed, max_news_items)
         except Exception as e:
             return {'error': str(e)}
-
-
 
 
 api.add_resource(CourseGetAPI, '/courses/<term>/<code>')

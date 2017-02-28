@@ -4,3 +4,4 @@ beautifulsoup4
 nose
 nose-cov
 nose-timer
+flask-cors
