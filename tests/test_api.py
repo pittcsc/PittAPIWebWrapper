@@ -16,9 +16,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 '''
 
+from apiwrapper.views import app
 import unittest
 
 class APITest(unittest.TestCase):
-    def test_nothing(self):
-        self.assertTrue(True, True)
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+
+    def test_lab_status_cath_g62(self):
+        result = self.app.get("/lab_status/cath_g62")
+        self.assertEqual(result.status_code, 200)
+        self.assertTrue("status" in result.get_data(True))
 

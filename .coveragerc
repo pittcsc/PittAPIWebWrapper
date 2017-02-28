@@ -1,0 +1,13 @@
+[run]
+branch = True
+omit =
+    /usr/*
+    venv/*
+    /opt/*
+    version.py
+    tests/*
+    /Library/Frameworks/*
+    apiwrapper/PittAPI/*
+
+[report]
+show_missing = True
