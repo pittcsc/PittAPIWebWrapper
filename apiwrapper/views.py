@@ -25,6 +25,7 @@ app = Flask(__name__)
 CORS(app)
 api = Api(app)
 
+
 @api.representation('application/json')
 def output_json(data, code, headers=None):
     """Makes a Flask response with a JSON encoded body"""
@@ -38,7 +39,7 @@ def page_not_found(e):
     return output_json({'error': 'Invalid request'}, 404)
 
 
-class CourseGetAPI(Resource):
+class CoursesAPI(Resource):
     def get(self, term, code):
         try:
             return course.get_courses(term, code)
@@ -85,12 +86,14 @@ class PeopleAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class TextbookAPI(Resource):
     def get(self, department_code, course_name, instructor, term):
         try:
             return textbook.get_books_data([{'department_code': department_code, 'course_name': course_name, 'instructor': instructor, 'term': term}])
         except Exception as e:
             return {'error': str(e)}
+
 
 class TextbookNoTermAPI(Resource):
     def get(self, department_code, course_name, instructor, term='2600'):
@@ -99,12 +102,14 @@ class TextbookNoTermAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleRoutesAPI(Resource):
     def get(self):
         try:
             return shuttle.get_routes()
         except Exception as e:
             return {'error': str(e)}
+
 
 class ShuttleVehiclePointsAPI(Resource):
     def get(self):
@@ -113,6 +118,7 @@ class ShuttleVehiclePointsAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleStopArrivalsAPI(Resource):
     def get(self, times_per_stop=1):
         try:
@@ -120,12 +126,14 @@ class ShuttleStopArrivalsAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleStopEstimatesAPI(Resource):
     def get(self, vehicle_id, quantity=2):
         try:
             return shuttle.get_vehicle_route_stop_estimates(vehicle_id, quantity)
         except Exception as e:
             return {'error': str(e)}
+
 
 class NewsAPI(Resource):
     def get(self, feed, max_news_items):
