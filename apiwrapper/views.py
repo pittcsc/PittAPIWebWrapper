@@ -17,13 +17,14 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 '''
 from flask import Flask, make_response
 from flask_restful import Api, Resource
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from .PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
 import json
 
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
+
 
 @api.representation('application/json')
 def output_json(data, code, headers=None):
@@ -38,7 +39,7 @@ def page_not_found(e):
     return output_json({'error': 'Invalid request'}, 404)
 
 
-class CourseGetAPI(Resource):
+class CoursesAPI(Resource):
     def get(self, term, code):
         try:
             return course.get_courses(term, code)
@@ -85,12 +86,14 @@ class PeopleAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class TextbookAPI(Resource):
     def get(self, department_code, course_name, instructor, term):
         try:
             return textbook.get_books_data([{'department_code': department_code, 'course_name': course_name, 'instructor': instructor, 'term': term}])
         except Exception as e:
             return {'error': str(e)}
+
 
 class TextbookNoTermAPI(Resource):
     def get(self, department_code, course_name, instructor, term='2600'):
@@ -99,12 +102,14 @@ class TextbookNoTermAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleRoutesAPI(Resource):
     def get(self):
         try:
             return shuttle.get_routes()
         except Exception as e:
             return {'error': str(e)}
+
 
 class ShuttleVehiclePointsAPI(Resource):
     def get(self):
@@ -113,6 +118,7 @@ class ShuttleVehiclePointsAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleStopArrivalsAPI(Resource):
     def get(self, times_per_stop=1):
         try:
@@ -120,12 +126,14 @@ class ShuttleStopArrivalsAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleStopEstimatesAPI(Resource):
     def get(self, vehicle_id, quantity=2):
         try:
             return shuttle.get_vehicle_route_stop_estimates(vehicle_id, quantity)
         except Exception as e:
             return {'error': str(e)}
+
 
 class NewsAPI(Resource):
     def get(self, feed, max_news_items):
@@ -136,8 +144,8 @@ class NewsAPI(Resource):
             return {'error': str(e)}
 
 
-api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
-api.add_resource(ClassAPI, '/class/<class_number>/<term>')
+api.add_resource(CoursesAPI, '/courses/<term>/<code>')
+api.add_resource(ClassAPI, '/class/<term>/<class_number>')
 api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
 api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
 api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
