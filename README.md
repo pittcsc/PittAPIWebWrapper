@@ -11,6 +11,76 @@
 1. Run `pip install -r apiwrapper/PittAPI/requirements.txt` to install PittAPI dependencies.
 1. Launch `python server.py` to run the server.
 
+# API Endpoints
+
+#### Courses
+```
+/courses/<term>/<code>
+```
+
+#### Classes
+```
+/class/<class_number>/<term>
+```
+
+#### Lab Status
+```
+/lab_status/<lab_name>
+```
+
+#### Laundry Status
+For simple laundry status:
+```
+/laundry/simple/<location>
+```
+
+For detailed laundry status:
+```
+/laundry/detailed/<location>
+```
+
+#### People
+```
+/people/<query>
+```
+
+#### Shuttles
+For shuttle routes:
+```
+/shuttle/routes
+```
+
+For shuttle vehicle points:
+```
+/shuttle/points
+```
+
+For shuttle arrivals:
+```
+/shuttle/arrivals/<times_per_stop>
+```
+
+For shuttle stop estimates:
+```
+/shuttle/estimates/<vehicle_id>/<quantity>
+```
+
+#### Textbooks
+If the term is to be specified:
+```
+/textbook/<department_code>/<course_name>/<instructor>/<term>
+```
+
+If the term is not to be specified:
+```
+/textbook/<department_code>/<course_name>/<instructor>
+```
+
+#### News
+```
+/news/<feed>/<max_news_items>
+```
+
 
 ## License
 ```
