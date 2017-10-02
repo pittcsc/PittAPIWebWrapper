@@ -15,17 +15,14 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 '''
-from flask import Flask, make_response
-from flask_restful import Api, Resource
-from flask_cors import CORS, cross_origin
-from .PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
+from flask import  make_response
+from flask_restful import Resource
+from apiwrapper.PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
+from apiwrapper.v0 import rest_api
 import json
 
-app = Flask(__name__)
-CORS(app)
-api = Api(app)
 
-@api.representation('application/json')
+@rest_api.representation('application/json')
 def output_json(data, code, headers=None):
     """Makes a Flask response with a JSON encoded body"""
     resp = make_response(json.dumps(data), code)
@@ -33,7 +30,7 @@ def output_json(data, code, headers=None):
     return resp
 
 
-@app.errorhandler(404)
+@rest_api.errorhandler(404)
 def page_not_found(e):
     return output_json({'error': 'Invalid request'}, 404)
 
@@ -85,12 +82,14 @@ class PeopleAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class TextbookAPI(Resource):
     def get(self, department_code, course_name, instructor, term):
         try:
             return textbook.get_books_data([{'department_code': department_code, 'course_name': course_name, 'instructor': instructor, 'term': term}])
         except Exception as e:
             return {'error': str(e)}
+
 
 class TextbookNoTermAPI(Resource):
     def get(self, department_code, course_name, instructor, term='2600'):
@@ -99,12 +98,14 @@ class TextbookNoTermAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleRoutesAPI(Resource):
     def get(self):
         try:
             return shuttle.get_routes()
         except Exception as e:
             return {'error': str(e)}
+
 
 class ShuttleVehiclePointsAPI(Resource):
     def get(self):
@@ -113,6 +114,7 @@ class ShuttleVehiclePointsAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleStopArrivalsAPI(Resource):
     def get(self, times_per_stop=1):
         try:
@@ -120,12 +122,14 @@ class ShuttleStopArrivalsAPI(Resource):
         except Exception as e:
             return {'error': str(e)}
 
+
 class ShuttleStopEstimatesAPI(Resource):
     def get(self, vehicle_id, quantity=2):
         try:
             return shuttle.get_vehicle_route_stop_estimates(vehicle_id, quantity)
         except Exception as e:
             return {'error': str(e)}
+
 
 class NewsAPI(Resource):
     def get(self, feed, max_news_items):
@@ -136,19 +140,16 @@ class NewsAPI(Resource):
             return {'error': str(e)}
 
 
-api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
-api.add_resource(ClassAPI, '/class/<class_number>/<term>')
-api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
-api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
-api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
-api.add_resource(PeopleAPI, '/people/<query>')
-api.add_resource(ShuttleRoutesAPI, '/shuttle/routes')
-api.add_resource(ShuttleVehiclePointsAPI, '/shuttle/points')
-api.add_resource(ShuttleStopArrivalsAPI, '/shuttle/arrivals/<times_per_stop>')
-api.add_resource(ShuttleStopEstimatesAPI, '/shuttle/estimates/<vehicle_id>/<quantity>')
-api.add_resource(TextbookAPI, '/textbook/<department_code>/<course_name>/<instructor>/<term>')
-api.add_resource(TextbookNoTermAPI, '/textbook/<department_code>/<course_name>/<instructor>/')
-api.add_resource(NewsAPI, '/news/<feed>/<max_news_items>')
-
-if __name__ is '__main__':
-    app.run(debug=True, port=8000)
+rest_api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
+rest_api.add_resource(ClassAPI, '/class/<class_number>/<term>')
+rest_api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
+rest_api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
+rest_api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
+rest_api.add_resource(PeopleAPI, '/people/<query>')
+rest_api.add_resource(ShuttleRoutesAPI, '/shuttle/routes')
+rest_api.add_resource(ShuttleVehiclePointsAPI, '/shuttle/points')
+rest_api.add_resource(ShuttleStopArrivalsAPI, '/shuttle/arrivals/<times_per_stop>')
+rest_api.add_resource(ShuttleStopEstimatesAPI, '/shuttle/estimates/<vehicle_id>/<quantity>')
+rest_api.add_resource(TextbookAPI, '/textbook/<department_code>/<course_name>/<instructor>/<term>')
+rest_api.add_resource(TextbookNoTermAPI, '/textbook/<department_code>/<course_name>/<instructor>/')
+rest_api.add_resource(NewsAPI, '/news/<feed>/<max_news_items>')

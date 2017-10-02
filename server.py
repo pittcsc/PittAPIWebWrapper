@@ -15,6 +15,8 @@ You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 '''
-from apiwrapper.views import app
+from apiwrapper import create_app
 
-app.run(host="0.0.0.0", port=5000)
+app = create_app()
+# TODO revert to 0.0.0.0
+app.run(host="127.0.0.1", port=5000)
