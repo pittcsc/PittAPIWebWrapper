@@ -23,7 +23,7 @@ from flask_restful import Resource
 from apiwrapper.PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
 
 
-class CourseGetAPI(Resource):
+class CourseGet(Resource):
     PATH = '/courses/<term>/<code>'
 
     def get(self, term, code):
@@ -33,7 +33,7 @@ class CourseGetAPI(Resource):
             return {'error': str(e)}
 
 
-class ClassAPI(Resource):
+class Class(Resource):
     PATH = '/class/<class_number>/<term>'
 
     def get(self, term, class_number):
@@ -43,7 +43,7 @@ class ClassAPI(Resource):
             return {'error': str(e)}
 
 
-class LabStatusAPI(Resource):
+class LabStatus(Resource):
     PATH = '/lab_status/<lab_name>'
 
     def get(self, lab_name):
@@ -53,7 +53,7 @@ class LabStatusAPI(Resource):
             return {'error': str(e)}
 
 
-class LaundryStatusAPI(Resource):
+class LaundryStatus(Resource):
     PATH = '/laundry/simple/<location>'
 
     def get(self, location):
@@ -63,7 +63,7 @@ class LaundryStatusAPI(Resource):
             return {'error': str(e)}
 
 
-class LaundryStatusDetailedAPI(Resource):
+class LaundryStatusDetailed(Resource):
     PATH = '/laundry/detailed/<location>'
 
     def get(self, location):
@@ -73,7 +73,7 @@ class LaundryStatusDetailedAPI(Resource):
             return {'error': str(e)}
 
 
-class PeopleAPI(Resource):
+class People(Resource):
     PATH = '/people/<query>'
 
     def get(self, query):
@@ -83,7 +83,7 @@ class PeopleAPI(Resource):
             return {'error': str(e)}
 
 
-class TextbookAPI(Resource):
+class Textbook(Resource):
     PATH = '/textbook/<department_code>/<course_name>/<instructor>/<term>'
 
     def get(self, department_code, course_name, instructor, term):
@@ -94,7 +94,7 @@ class TextbookAPI(Resource):
             return {'error': str(e)}
 
 
-class ShuttleRoutesAPI(Resource):
+class ShuttleRoutes(Resource):
     PATH = '/shuttle/routes'
 
     def get(self):
@@ -104,7 +104,7 @@ class ShuttleRoutesAPI(Resource):
             return {'error': str(e)}
 
 
-class ShuttleVehiclePointsAPI(Resource):
+class ShuttleVehiclePoints(Resource):
     PATH = '/shuttle/points'
 
     def get(self):
@@ -114,7 +114,7 @@ class ShuttleVehiclePointsAPI(Resource):
             return {'error': str(e)}
 
 
-class ShuttleStopArrivalsAPI(Resource):
+class ShuttleStopArrivals(Resource):
     PATH = '/shuttle/arrivals/<times_per_stop>'
 
     def get(self, times_per_stop=1):
@@ -124,7 +124,7 @@ class ShuttleStopArrivalsAPI(Resource):
             return {'error': str(e)}
 
 
-class ShuttleStopEstimatesAPI(Resource):
+class ShuttleStopEstimates(Resource):
     PATH = '/shuttle/estimates/<vehicle_id>/<quantity>'
 
     def get(self, vehicle_id, quantity=2):
