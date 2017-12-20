@@ -18,16 +18,16 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 import unittest
 
-from apiwrapper.v0.views import app
+from apiwrapper import create_app
 
 
 class APITest(unittest.TestCase):
     def setUp(self):
-        self.app = app.test_client()
+        self.app = create_app().test_client()
         self.app.testing = True
 
     def test_lab_status_cath_g62(self):
-        result = self.app.get("/lab_status/cath_g62")
+        result = self.app.get("/v0/lab_status/cath_g62")
         self.assertEqual(result.status_code, 200)
         self.assertTrue("status" in result.get_data(True))
 
