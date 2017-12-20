@@ -1,4 +1,4 @@
-'''
+"""
 Web Wrapper for PittAPI, web app for REST endpoints for the PittAPI
 Copyright (C) 2015 Ritwik Gupta
 
@@ -14,28 +14,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'''
-from flask import  make_response
+"""
+import inspect
+import sys
+
 from flask_restful import Resource
+
 from apiwrapper.PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
-from apiwrapper.v0 import rest_api
-import json
-
-
-@rest_api.representation('application/json')
-def output_json(data, code, headers=None):
-    """Makes a Flask response with a JSON encoded body"""
-    resp = make_response(json.dumps(data), code)
-    resp.headers.extend(headers or {})
-    return resp
-
-
-@rest_api.errorhandler(404)
-def page_not_found(e):
-    return output_json({'error': 'Invalid request'}, 404)
 
 
 class CourseGetAPI(Resource):
+    PATH = '/courses/<term>/<code>'
+
     def get(self, term, code):
         try:
             return course.get_courses(term, code)
@@ -44,6 +34,8 @@ class CourseGetAPI(Resource):
 
 
 class ClassAPI(Resource):
+    PATH = '/class/<class_number>/<term>'
+
     def get(self, term, class_number):
         try:
             return course.get_class(term, class_number)
@@ -52,6 +44,8 @@ class ClassAPI(Resource):
 
 
 class LabStatusAPI(Resource):
+    PATH = '/lab_status/<lab_name>'
+
     def get(self, lab_name):
         try:
             return lab.get_status(lab_name)
@@ -60,6 +54,8 @@ class LabStatusAPI(Resource):
 
 
 class LaundryStatusAPI(Resource):
+    PATH = '/laundry/simple/<location>'
+
     def get(self, location):
         try:
             return laundry.get_status_simple(location)
@@ -68,6 +64,8 @@ class LaundryStatusAPI(Resource):
 
 
 class LaundryStatusDetailedAPI(Resource):
+    PATH = '/laundry/detailed/<location>'
+
     def get(self, location):
         try:
             return laundry.get_status_detailed(location)
@@ -76,6 +74,8 @@ class LaundryStatusDetailedAPI(Resource):
 
 
 class PeopleAPI(Resource):
+    PATH = '/people/<query>'
+
     def get(self, query):
         try:
             return people.get_person(query)
@@ -84,22 +84,19 @@ class PeopleAPI(Resource):
 
 
 class TextbookAPI(Resource):
+    PATH = '/textbook/<department_code>/<course_name>/<instructor>/<term>'
+
     def get(self, department_code, course_name, instructor, term):
         try:
-            return textbook.get_books_data([{'department_code': department_code, 'course_name': course_name, 'instructor': instructor, 'term': term}])
-        except Exception as e:
-            return {'error': str(e)}
-
-
-class TextbookNoTermAPI(Resource):
-    def get(self, department_code, course_name, instructor, term='2600'):
-        try:
-            return textbook.get_books_data([{'department_code': department_code, 'course_name': course_name, 'instructor': instructor, 'term': term}])
+            return textbook.get_books_data([{'department_code': department_code, 'course_name': course_name,
+                                             'instructor': instructor, 'term': term}])
         except Exception as e:
             return {'error': str(e)}
 
 
 class ShuttleRoutesAPI(Resource):
+    PATH = '/shuttle/routes'
+
     def get(self):
         try:
             return shuttle.get_routes()
@@ -108,6 +105,8 @@ class ShuttleRoutesAPI(Resource):
 
 
 class ShuttleVehiclePointsAPI(Resource):
+    PATH = '/shuttle/points'
+
     def get(self):
         try:
             return shuttle.get_map_vehicle_points()
@@ -116,14 +115,18 @@ class ShuttleVehiclePointsAPI(Resource):
 
 
 class ShuttleStopArrivalsAPI(Resource):
+    PATH = '/shuttle/arrivals/<times_per_stop>'
+
     def get(self, times_per_stop=1):
         try:
-            return shuttle.get_route_stop_arrivals("8882812681",times_per_stop)
+            return shuttle.get_route_stop_arrivals("8882812681", times_per_stop)
         except Exception as e:
             return {'error': str(e)}
 
 
 class ShuttleStopEstimatesAPI(Resource):
+    PATH = '/shuttle/estimates/<vehicle_id>/<quantity>'
+
     def get(self, vehicle_id, quantity=2):
         try:
             return shuttle.get_vehicle_route_stop_estimates(vehicle_id, quantity)
@@ -131,7 +134,9 @@ class ShuttleStopEstimatesAPI(Resource):
             return {'error': str(e)}
 
 
-class NewsAPI(Resource):
+class News(Resource):
+    PATH = '/news/<feed>/<max_news_items>'
+
     def get(self, feed, max_news_items):
         try:
             max_news_items = int(max_news_items)
@@ -140,16 +145,9 @@ class NewsAPI(Resource):
             return {'error': str(e)}
 
 
-rest_api.add_resource(CourseGetAPI, '/courses/<term>/<code>')
-rest_api.add_resource(ClassAPI, '/class/<class_number>/<term>')
-rest_api.add_resource(LabStatusAPI, '/lab_status/<lab_name>')
-rest_api.add_resource(LaundryStatusAPI, '/laundry/simple/<location>')
-rest_api.add_resource(LaundryStatusDetailedAPI, '/laundry/detailed/<location>')
-rest_api.add_resource(PeopleAPI, '/people/<query>')
-rest_api.add_resource(ShuttleRoutesAPI, '/shuttle/routes')
-rest_api.add_resource(ShuttleVehiclePointsAPI, '/shuttle/points')
-rest_api.add_resource(ShuttleStopArrivalsAPI, '/shuttle/arrivals/<times_per_stop>')
-rest_api.add_resource(ShuttleStopEstimatesAPI, '/shuttle/estimates/<vehicle_id>/<quantity>')
-rest_api.add_resource(TextbookAPI, '/textbook/<department_code>/<course_name>/<instructor>/<term>')
-rest_api.add_resource(TextbookNoTermAPI, '/textbook/<department_code>/<course_name>/<instructor>/')
-rest_api.add_resource(NewsAPI, '/news/<feed>/<max_news_items>')
+def add_resources():
+    from apiwrapper.v0 import rest_api
+    clsmembers = inspect.getmembers(sys.modules[__name__], inspect.isclass)
+    clsmembers = [cls[1] for cls in clsmembers if cls[0] != 'Resource']
+    for cls in clsmembers:
+        rest_api.add_resource(cls, cls.PATH)
