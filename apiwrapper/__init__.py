@@ -1,4 +1,4 @@
-'''
+"""
 Web Wrapper for PittAPI, web app for REST endpoints for the PittAPI
 Copyright (C) 2015 Ritwik Gupta
 
@@ -14,20 +14,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'''
+"""
+from flask import Flask
+from flask_cors import CORS
 
-import unittest
+from apiwrapper.v0 import apiv0_bp
 
-from apiwrapper import create_app
+cors = CORS()
 
 
-class APITest(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app().test_client()
-        self.app.testing = True
-
-    def test_lab_status_cath_g62(self):
-        result = self.app.get("/v0/lab_status/cath_g62")
-        self.assertEqual(result.status_code, 200)
-        self.assertTrue("status" in result.get_data(True))
-
+def create_app():
+    app = Flask(__name__)
+    cors.init_app(app)
+    app.register_blueprint(apiv0_bp, url_prefix='/v0')
+    return app

@@ -1,4 +1,4 @@
-'''
+"""
 Web Wrapper for PittAPI, web app for REST endpoints for the PittAPI
 Copyright (C) 2015 Ritwik Gupta
 
@@ -14,7 +14,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'''
-from apiwrapper.views import app
+"""
+from apiwrapper import create_app
 
+app = create_app()
 app.run(host="0.0.0.0", port=5000)

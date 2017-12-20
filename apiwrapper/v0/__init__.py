@@ -1,4 +1,4 @@
-'''
+"""
 Web Wrapper for PittAPI, web app for REST endpoints for the PittAPI
 Copyright (C) 2015 Ritwik Gupta
 
@@ -14,20 +14,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-'''
+"""
+from flask import Blueprint
+from flask_restful import Api
 
-import unittest
+from apiwrapper.v0.views import add_resources
 
-from apiwrapper import create_app
+apiv0_bp = Blueprint('rest_api', __name__)
+apiv0 = Api(apiv0_bp)
 
-
-class APITest(unittest.TestCase):
-    def setUp(self):
-        self.app = create_app().test_client()
-        self.app.testing = True
-
-    def test_lab_status_cath_g62(self):
-        result = self.app.get("/v0/lab_status/cath_g62")
-        self.assertEqual(result.status_code, 200)
-        self.assertTrue("status" in result.get_data(True))
-
+add_resources()
