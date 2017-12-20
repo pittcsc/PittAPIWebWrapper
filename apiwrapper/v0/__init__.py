@@ -20,7 +20,7 @@ from flask_restful import Api
 
 from apiwrapper.v0.views import add_resources
 
-restapi_blue = Blueprint('rest_api', __name__)
-rest_api = Api(restapi_blue)
+apiv0_bp = Blueprint('rest_api', __name__)
+apiv0 = Api(apiv0_bp)
 
 add_resources()

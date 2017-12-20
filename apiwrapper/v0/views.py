@@ -146,8 +146,8 @@ class News(Resource):
 
 
 def add_resources():
-    from apiwrapper.v0 import rest_api
+    from apiwrapper.v0 import apiv0
     clsmembers = inspect.getmembers(sys.modules[__name__], inspect.isclass)
     clsmembers = [cls[1] for cls in clsmembers if cls[0] != 'Resource']
     for cls in clsmembers:
-        rest_api.add_resource(cls, cls.PATH)
+        apiv0.add_resource(cls, cls.PATH)
