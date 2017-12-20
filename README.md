@@ -15,44 +15,44 @@
 
 #### Courses
 ```
-/courses/<term>/<code>
+/v0/courses/<term>/<code>
 ```
 
 #### Classes
 ```
-/class/<class_number>/<term>
+/v0/class/<class_number>/<term>
 ```
 
 #### Lab Status
 ```
-/lab_status/<lab_name>
+/v0/lab_status/<lab_name>
 ```
 
 #### Laundry Status
 For simple laundry status:
 ```
-/laundry/simple/<location>
+/v0/laundry/simple/<location>
 ```
 
 For detailed laundry status:
 ```
-/laundry/detailed/<location>
+/v0/laundry/detailed/<location>
 ```
 
 #### People
 ```
-/people/<query>
+/v0/people/<query>
 ```
 
 #### Shuttles
 For shuttle routes:
 ```
-/shuttle/routes
+/v0/shuttle/routes
 ```
 
 For shuttle vehicle points:
 ```
-/shuttle/points
+/v0/shuttle/points
 ```
 
 For shuttle arrivals:
@@ -68,17 +68,12 @@ For shuttle stop estimates:
 #### Textbooks
 If the term is to be specified:
 ```
-/textbook/<department_code>/<course_name>/<instructor>/<term>
-```
-
-If the term is not to be specified:
-```
-/textbook/<department_code>/<course_name>/<instructor>
+/v0/textbook/<department_code>/<course_name>/<instructor>/<term>
 ```
 
 #### News
 ```
-/news/<feed>/<max_news_items>
+/v0/news/<feed>/<max_news_items>
 ```
 
 
