@@ -18,7 +18,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 from flask import Flask, make_response
 from flask_restful import Api, Resource
 from flask_cors import CORS, cross_origin
-from .PittAPI.PittAPI import course, lab, laundry, people, shuttle, textbook, news
+from PittAPI import course, lab, laundry, people, shuttle, textbook, news
 import json
 
 app = Flask(__name__)
