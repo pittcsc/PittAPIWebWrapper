@@ -5,3 +5,4 @@ nose
 nose-cov
 nose-timer
 flask-cors
+PittAPI
