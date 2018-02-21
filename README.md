@@ -4,11 +4,9 @@
 ![Python 3.4, 3.5](https://img.shields.io/badge/python-3.4%2C%203.5-green.svg)
 
 # Installation
-1. Clone this repo with the `--recurse-submodules` flag.
+1. Clone this repo
 1. Create a virtual environment `virtualenv venv` and enable it. `source venv/bin/activate`
-1. Run `git submodule update --remote --merge` to update the PittAPI submodule.
 1. Run `pip install -r requirements.txt` to install dependencies.
-1. Run `pip install -r apiwrapper/PittAPI/requirements.txt` to install PittAPI dependencies.
 1. Launch `python server.py` to run the server.
 
 # API Endpoints

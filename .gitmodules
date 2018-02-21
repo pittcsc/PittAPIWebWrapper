@@ -1,3 +1,0 @@
-[submodule "apiwrapper/PittAPI"]
-	path = apiwrapper/PittAPI
-	url = git@github.com:Pitt-CSC/PittAPI.git
